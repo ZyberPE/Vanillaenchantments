@@ -14,32 +14,31 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 
 use pocketmine\entity\Living;
-use pocketmine\entity\Entity;
 use pocketmine\entity\EntityTypeIds;
 
-use pocketmine\item\Item;
-use pocketmine\item\VanillaItems;
-use pocketmine\block\VanillaBlocks;
+use pocketmine\block\BlockTypeIds;
 
+use pocketmine\item\VanillaItems;
 use pocketmine\item\enchantment\VanillaEnchantments;
 
-class Core extends PluginBase implements Listener {
+class Core extends PluginBase implements Listener{
 
     public function onEnable() : void{
         $this->saveDefaultConfig();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getLogger()->info("Vanilla enchant logic enabled (API 5)");
+        $this->getLogger()->info("VanillaEnchantments enabled (API 5)");
     }
 
-    /* -------------------------------- FORTUNE -------------------------------- */
+    /* ------------------------------------------------ */
+    /*                     FORTUNE                     */
+    /* ------------------------------------------------ */
 
     public function onBreak(BlockBreakEvent $event) : void{
-        $player = $event->getPlayer();
         $block = $event->getBlock();
         $item = $event->getItem();
 
-        // Apple drop from leaves
-        if($block->equals(VanillaBlocks::OAK_LEAVES())){
+        // Apple drop from oak leaves (10%)
+        if($block->getTypeId() === BlockTypeIds::OAK_LEAVES){
             if(mt_rand(1, 100) <= 10){
                 $event->setDrops([VanillaItems::APPLE()]);
             }
@@ -51,7 +50,6 @@ class Core extends PluginBase implements Listener {
             $add = mt_rand(0, $fortuneLevel + 1);
 
             $drops = $event->getDrops();
-
             foreach($drops as $drop){
                 $drop->setCount($drop->getCount() + $add);
             }
@@ -60,7 +58,9 @@ class Core extends PluginBase implements Listener {
         }
     }
 
-    /* -------------------------------- SMITE / BANE / LOOTING -------------------------------- */
+    /* ------------------------------------------------ */
+    /*              SMITE / BANE / LOOTING             */
+    /* ------------------------------------------------ */
 
     public function onDamage(EntityDamageByEntityEvent $event) : void{
         $victim = $event->getEntity();
@@ -74,6 +74,7 @@ class Core extends PluginBase implements Listener {
 
         /* ---------- SMITE ---------- */
         $smiteLevel = $item->getEnchantmentLevel(VanillaEnchantments::SMITE());
+
         if($smiteLevel > 0){
             if(in_array($victim->getTypeId(), [
                 EntityTypeIds::ZOMBIE,
@@ -91,6 +92,7 @@ class Core extends PluginBase implements Listener {
 
         /* ---------- BANE OF ARTHROPODS ---------- */
         $baneLevel = $item->getEnchantmentLevel(VanillaEnchantments::BANE_OF_ARTHROPODS());
+
         if($baneLevel > 0){
             if(in_array($victim->getTypeId(), [
                 EntityTypeIds::SPIDER,
@@ -122,7 +124,9 @@ class Core extends PluginBase implements Listener {
         }
     }
 
-    /* -------------------------------- FAST ARROWS -------------------------------- */
+    /* ------------------------------------------------ */
+    /*                  FAST ARROWS                    */
+    /* ------------------------------------------------ */
 
     public function onShoot(EntityShootBowEvent $event) : void{
         $projectile = $event->getProjectile();
