@@ -1,0 +1,21 @@
+# Developed by TheAz928
+# VanillaEnchantments configuration file (API 5)
+
+fortune:
+  blocks:
+    - minecraft:coal_ore
+    - minecraft:iron_ore
+    - minecraft:gold_ore
+    - minecraft:diamond_ore
+    - minecraft:oak_leaves
+    - minecraft:nether_quartz_ore
+    - minecraft:glowstone
+    - minecraft:redstone_ore
+    - minecraft:emerald_ore
+
+looting:
+  entities:
+    minecraft:chicken:
+      - minecraft:feather
+
+version: "5.0.0"
