@@ -1,0 +1,7 @@
+name: VanillaEnchantments
+version: 5.0.0
+main: vanilla\Core
+api: 5.0.0
+author: TheAz928
+website: https://github.com/TheAz928/VanillaEnchantments
+description: Vanilla enchantments implementation for PocketMine-MP API 5 (PHP 8) plugin rewrote by ZyberPE
